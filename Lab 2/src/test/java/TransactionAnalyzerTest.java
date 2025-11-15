@@ -1,49 +1,45 @@
 package ua.dut.finance.analyzer;
 
-import org.junit.jupiter.api.Assertions; // [cite: 144]
-import org.junit.jupiter.api.Test; // [cite: 145]
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import ua.dut.finance.Transaction;
 import ua.dut.finance.TransactionCSVReader;
 
-import java.util.Arrays; // [cite: 146]
-import java.util.List; // [cite: 147]
+import java.util.Arrays;
+import java.util.List;
 
 class TransactionAnalyzerTest {
 
     @Test
-    public void testCalculateTotalBalance() { // [cite: 125]
-        // Створення тестових даних [cite: 126]
-        Transaction t1 = new Transaction("2023-01-01", 100.0, "Дохід"); // [cite: 127]
-        Transaction t2 = new Transaction("2023-01-02", -50.0, "Витрата"); // [cite: 128]
-        Transaction t3 = new Transaction("2023-01-03", 150.0, "Дохід"); // [cite: 129]
-        List<Transaction> transactions = Arrays.asList(t1, t2, t3); // [cite: 130]
+    public void testCalculateTotalBalance() {
+        // Створення тестових даних
+        Transaction t1 = new Transaction("2023-01-01", 100.0, "Дохід");
+        Transaction t2 = new Transaction("2023-01-02", -50.0, "Витрата");
+        Transaction t3 = new Transaction("2023-01-03", 150.0, "Дохід");
+        List<Transaction> transactions = Arrays.asList(t1, t2, t3);
 
-        double result = TransactionAnalyzer.calculateTotalBalance(transactions); // [cite: 134]
-        Assertions.assertEquals(200.0, result); // [cite: 136]
+        double result = TransactionAnalyzer.calculateTotalBalance(transactions);
+        Assertions.assertEquals(200.0, result);
     }
 
     @Test
-    public void testCountTransactionsByMonth() { // [cite: 192]
-        // Підготовка тестових даних [cite: 193]
-        Transaction t1 = new Transaction("01-02-2023", 50.0, "Дохід"); // [cite: 194]
-        Transaction t2 = new Transaction("15-02-2023", -20.0, "Витрата"); // [cite: 195]
-        Transaction t3 = new Transaction("05-03-2023", 100.0, "Дохід"); // [cite: 196]
-        List<Transaction> transactions = Arrays.asList(t1, t2, t3); // [cite: 197]
+    public void testCountTransactionsByMonth() {
+        // Підготовка тестових даних
+        Transaction t1 = new Transaction("01-02-2023", 50.0, "Дохід");
+        Transaction t2 = new Transaction("15-02-2023", -20.0, "Витрата");
+        Transaction t3 = new Transaction("05-03-2023", 100.0, "Дохід");
+        List<Transaction> transactions = Arrays.asList(t1, t2, t3);
 
-        int countFeb = TransactionAnalyzer.countTransactionsByMonth(transactions, "02-2023"); // [cite: 200]
-        int countMar = TransactionAnalyzer.countTransactionsByMonth(transactions, "03-2023"); // [cite: 201]
+        int countFeb = TransactionAnalyzer.countTransactionsByMonth(transactions, "02-2023");
+        int countMar = TransactionAnalyzer.countTransactionsByMonth(transactions, "03-2023");
 
-        Assertions.assertEquals(2, countFeb); // [cite: 203]
-        Assertions.assertEquals(1, countMar); // [cite: 204]
+        Assertions.assertEquals(2, countFeb);
+        Assertions.assertEquals(1, countMar);
     }
 
-    /**
-     * Новий тест для самостійної роботи [cite: 280]
-     * Це більше інтеграційний тест, але він перевіряє читання
-     */
     @Test
     public void testReadTransactionsFromCSV() {
-        String filePath = "https://informer.com.ua/dut/java/pr2.csv"; // [cite: 6]
+        String filePath = "https://informer.com.ua/dut/java/pr2.csv";
         List<Transaction> transactions = TransactionCSVReader.readTransactions(filePath);
 
         // Перевіряємо, що список не порожній і щось прочитав
@@ -55,10 +51,6 @@ class TransactionAnalyzerTest {
         Assertions.assertEquals(-450.0, firstTransaction.getAmount());
         Assertions.assertEquals("Сільпо", firstTransaction.getDescription());
     }
-
-    /**
-     * Новий тест для самостійної роботи [cite: 281]
-     */
     @Test
     public void testFindTopExpenses() {
         Transaction t1 = new Transaction("01-01-2023", -100.0, "A");

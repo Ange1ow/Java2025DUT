@@ -1,59 +1,50 @@
 package ua.dut.finance;
 
-import java.time.LocalDate; // [cite: 173]
-import java.time.format.DateTimeFormatter; // [cite: 174]
-import java.util.Comparator; // [cite: 237]
-import java.util.List; // [cite: 172]
-import java.util.stream.Collectors; // [cite: 239]
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
-// Вимога 4: Абстрактний клас
 public abstract class TransactionAnalyzer {
 
-    // Форматер для дати [cite: 154]
+    // Форматер для дати
     private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy"); // [cite: 154]
 
-    // Вимога 4: Приватний конструктор
+    // Приватний конструктор
     private TransactionAnalyzer() {}
 
-    /**
-     * Завдання 2: Розрахунок загального балансу [cite: 88]
-     */
-    public static double calculateTotalBalance(List<Transaction> transactions) { // [cite: 96]
-        double balance = 0; // [cite: 97]
-        for (Transaction transaction : transactions) { // [cite: 98]
-            balance += transaction.getAmount(); // [cite: 99]
+    //Розрахунок загального балансу
+    public static double calculateTotalBalance(List<Transaction> transactions) {
+        double balance = 0;
+        for (Transaction transaction : transactions) {
+            balance += transaction.getAmount();
         }
-        return balance; // [cite: 101]
+        return balance;
     }
-
-    /**
-     * Завдання 3: Підрахунок транзакцій за місяць [cite: 148]
-     */
-    public static int countTransactionsByMonth(List<Transaction> transactions, String monthYear) { // [cite: 157]
-        int count = 0; // [cite: 158]
-        for (Transaction transaction : transactions) { // [cite: 159]
-            LocalDate date = LocalDate.parse(transaction.getDate(), dateFormatter); // [cite: 160]
-            String transactionMonthYear = date.format(DateTimeFormatter.ofPattern("MM-yyyy")); // [cite: 161]
-            if (transactionMonthYear.equals(monthYear)) { // [cite: 162]
-                count++; // [cite: 163]
+    //Підрахунок транзакцій за місяць
+    public static int countTransactionsByMonth(List<Transaction> transactions, String monthYear) {
+        int count = 0;
+        for (Transaction transaction : transactions) {
+            LocalDate date = LocalDate.parse(transaction.getDate(), dateFormatter);
+            String transactionMonthYear = date.format(DateTimeFormatter.ofPattern("MM-yyyy"));
+            if (transactionMonthYear.equals(monthYear)) {
+                count++;
             }
         }
-        return count; // [cite: 166]
+        return count;
     }
 
-    /**
-     * Завдання 5: Аналіз та виведення 10 найбільших витрат [cite: 236]
-     */
-    public static List<Transaction> findTopExpenses(List<Transaction> transactions) { // [cite: 243]
+    //Завдання 5: Аналіз та виведення 10 найбільших витрат
+
+    public static List<Transaction> findTopExpenses(List<Transaction> transactions) {
         return transactions.stream()
-                .filter(t -> t.getAmount() < 0) // [cite: 245]
-                .sorted(Comparator.comparing(Transaction::getAmount)) // [cite: 246]
-                .limit(10) // [cite: 247]
-                .collect(Collectors.toList()); // [cite: 248]
+                .filter(t -> t.getAmount() < 0)
+                .sorted(Comparator.comparing(Transaction::getAmount))
+                .limit(10)
+                .collect(Collectors.toList());
     }
-    /**
-     * [cite_start]Самостійна робота: Визначення найбільшої витрати за місяць [cite: 283]
-     */
+    //Визначення найбільшої витрати за місяць
     public static Transaction findMaxExpenseByMonth(List<Transaction> transactions, String monthYear) {
         return transactions.stream()
                 .filter(t -> t.getAmount() < 0) // Тільки витрати
@@ -64,10 +55,7 @@ public abstract class TransactionAnalyzer {
                 .min(Comparator.comparing(Transaction::getAmount)) // min, тому що суми від'ємні (-1000 < -100)
                 .orElse(null);
     }
-
-    /**
-     * [cite_start]Самостійна робота: Визначення найменшої витрати за місяць [cite: 283]
-     */
+    //Визначення найменшої витрати за місяць
     public static Transaction findMinExpenseByMonth(List<Transaction> transactions, String monthYear) {
         return transactions.stream()
                 .filter(t -> t.getAmount() < 0) // Тільки витрати
@@ -78,10 +66,7 @@ public abstract class TransactionAnalyzer {
                 .max(Comparator.comparing(Transaction::getAmount)) // max, тому що суми від'ємні (-100 > -1000)
                 .orElse(null);
     }
-
-    /**
-     * [cite_start]Самостійна робота: Підсумок витрат по категоріях [cite: 284]
-     */
+    //[cite_start]Самостійна робота: Підсумок витрат по категоріях
     public static java.util.Map<String, Double> summarizeExpensesByCategory(List<Transaction> transactions) {
         return transactions.stream()
                 .filter(t -> t.getAmount() < 0) // Тільки витрати
@@ -90,10 +75,7 @@ public abstract class TransactionAnalyzer {
                         Collectors.summingDouble(Transaction::getAmount)
                 ));
     }
-
-    /**
-     * [cite_start]Самостійна робота: Підсумок витрат по місяцях [cite: 284]
-     */
+    //Підсумок витрат по місяцях
     public static java.util.Map<String, Double> summarizeExpensesByMonth(List<Transaction> transactions) {
         return transactions.stream()
                 .filter(t -> t.getAmount() < 0) // Тільки витрати
